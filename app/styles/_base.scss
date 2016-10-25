@@ -1,0 +1,19 @@
+
+
+body{
+  background-color: slategrey;
+  color: #ccc;
+  font-family: Arial, sans-serif;
+  & > section { //fix readable width for container
+    max-width: 38em;
+    margin: 0 auto; //center align horizontally
+  }
+}
+
+a{
+  text-decoration: none;
+  color: #fff;
+  &:hover, &:hover > h1 {
+    color: #fff;
+  }
+}
