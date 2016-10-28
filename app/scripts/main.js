@@ -5,7 +5,6 @@ var channels=["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", 
 var results=[];
 /**
   * wait until the document is ready to take orders
-  * define behaviour buttons and text fields
   * define ajax api call
   */
 $(document).ready(function(){
@@ -16,7 +15,10 @@ $(document).ready(function(){
     */
   function renderChannels(){
     channels.forEach(function(channel,index){
+      $('.error').append('<ul>')
       searchTwitch(channel);
+      $('.error').append('</ul>')
+
     });
 
   }
@@ -38,11 +40,13 @@ $(document).ready(function(){
         url: apiChannelURL + channel,
         success: function(data){
           if(data.status!="404"){
-            result+="<p><a href='" + data.url + "'>";
+            result+="<section><a href='" + data.url + "'>";
             result+="<img src='" + data.logo + "'></img>";
             result+= "<span class='display_name'>" + data.display_name + "</span>";
             result+= "<span class='name'>(" + data.name + ")</span>";
             getStream();
+          }else{
+            $('.error').append("<li>" + data.message + "</li>");
           }
         },
         error: function(e){
@@ -57,15 +61,17 @@ $(document).ready(function(){
           dataType: "jsonp",
           url: apiStreamURL + channel,
           success: function(data){
-            result+="<span class='stream";
+            result+= "<div class='status";
             if(data.stream == null){
-              result+=" fa fw fa-clock-o'>"
-              result+= "Offline"; //add an offline class
+              result+=" offline'>";
+              result+="<i class='presence fa fw fa-clock-o'></i>"
+              result+= "<span class='stream'>Offline</span>";
             } else {
-              result+= " fa fw fa-check-circle-o'>"
-              result+= data.stream.game; //no class
+              result+=" online'>";
+              result+= "<i class='presence fa fw fa-check-circle-o'></i>"
+              result+= "<span class='stream'>" + data.stream.game+"</span>";//no class
             }
-            result+= "</span></a></p>";
+            result+= "</div></a></section>";
             $('.result').append(result); //render result
         }
       });
