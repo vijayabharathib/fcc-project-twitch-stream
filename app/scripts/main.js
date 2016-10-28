@@ -1,42 +1,52 @@
 
 var apiStreamURL="https://wind-bow.hyperdev.space/twitch-api/streams/"; //base url
 var apiChannelURL="https://wind-bow.hyperdev.space/twitch-api/channels/"; //base url
-var channels=["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas","comster404"];
+var channels=[
+  "ESL_SC2",
+  "OgamingSC2",
+  "cretetion",
+  "freecodecamp",
+  "storbeck",
+  "habathcx",
+  "RobotCaleb",
+  "noobs2ninjas",
+  "comster404"];
 var results=[];
 /**
   * wait until the document is ready to take orders
-  * define ajax api call
   */
 $(document).ready(function(){
 
   /**
+    * for each channel in the global variable channels
     * render channel status, current stream
     * logo and link
     */
   function renderChannels(){
+    $('.error').append('<ul>')
     channels.forEach(function(channel,index){
-      $('.error').append('<ul>')
       searchTwitch(channel);
-      $('.error').append('</ul>')
-
     });
-
+    $('.error').append('</ul>')
   }
   /**
-    * search generator for wiki api
-    * info prop used to get url
-    * extract used to get snippet - 140 chars
-    * apiURLPrefix - global base api url
-    * searchQuery - global search text variable
+    * search twitch api for channel details first
+    * call for stream details next
     * render results on success
+    * log error if channel cannot be found
     */
   function searchTwitch(channel){
     var result="";
+    /**
+      * get channel details
+      * if the result is success, call stream details
+      * render them in order
+      */
     $.ajax({
         headers: {
-          "Access-Control-Allow-Origin": "*"
+          "Access-Control-Allow-Origin": "*" //handle cross origin issues
         },
-        dataType: "jsonp",
+        dataType: "jsonp", //again to handle cross origin
         url: apiChannelURL + channel,
         success: function(data){
           if(data.status!="404"){
@@ -45,7 +55,7 @@ $(document).ready(function(){
             result+= "<span class='display_name'>" + data.display_name + "</span>";
             result+= "<span class='name'>(" + data.name + ")</span>";
             getStream();
-          }else{
+          }else{ //if status is 404 log error
             $('.error').append("<li>" + data.message + "</li>");
           }
         },
@@ -53,12 +63,15 @@ $(document).ready(function(){
           $('.error').append(e.message);
         }
     });
+    /**
+      * get stream details if channel is available
+      */
     function getStream(){
       $.ajax({
           headers: {
-            "Access-Control-Allow-Origin": "*"
+            "Access-Control-Allow-Origin": "*" //handle cross origin issues
           },
-          dataType: "jsonp",
+          dataType: "jsonp", //to handle cross origin issues
           url: apiStreamURL + channel,
           success: function(data){
             result+= "<div class='status";
@@ -77,5 +90,7 @@ $(document).ready(function(){
       });
     }
   }
+
+  // main call that does the job
   renderChannels();
 });

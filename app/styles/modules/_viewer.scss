@@ -1,6 +1,10 @@
 
 .result{
   margin-top: 1em;
+  h1{
+    text-align: center;
+    color: #fff;
+  }
 }
 
 section > a{
@@ -11,13 +15,16 @@ section > a{
   background: #eee;
   padding: 5px;
   border-radius: 4px;
-  box-shadow: 1px 1px 4px 2px #666;
+  box-shadow: 1px 1px 4px 2px rgba(0,0,0,.3);
   margin-bottom: .3em;
-
+  text-decoration: none;
+  &:hover{
+    background: #ccc;
+  }
   .status {
     margin-left: auto;
-    &.online { color: #0c0;}
-    &:not(.online) { color: #999;}
+    &.online { color: #080;}
+    &:not(.online) { color: #a50;}
   }
   .presence {
     padding-right: .5em;

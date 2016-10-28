@@ -9,12 +9,3 @@ body {
     margin: 0 auto; //center align horizontally
   }
 }
-
-a {
-  color: #fff;
-  text-decoration: none;
-
-  &:hover, &:hover > h1 {
-    color: #fff;
-  }
-}
